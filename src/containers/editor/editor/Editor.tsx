@@ -11,6 +11,11 @@ import { useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { useShallow } from "zustand/shallow";
 import { example } from "./data";
+import { getLastDocument } from "@/lib/db/document";
+import { setLastDocument } from "@/lib/db/document";
+import { postDocUpdate, onDocUpdate } from "@/lib/sync/documentSync";
+import { useTreeMeta } from "@/stores/treeStore";
+import { debounce } from "lodash-es";
 
 loader.config({ paths: { vs: vsURL } });
 
@@ -30,6 +35,7 @@ export default function Editor({ kind, ...props }: EditorProps) {
   useDisplayExample(kind);
   useRevealNode(kind);
   useEditTree(kind);
+  usePersistDoc(kind);
 
   return (
     <MonacoEditor
@@ -108,13 +114,69 @@ export function useEditTree(kind: Kind) {
   }, [editor, editQueue]);
 }
 
+function usePersistDoc(kind: Kind) {
+  const editor = useEditor("main");
+  const { version } = useTreeMeta();
+  const lastSavedRef = (typeof window !== "undefined" ? (window as any).__json4u_lastSavedRef : undefined) ?? { text: "" };
+  if (typeof window !== "undefined") {
+    (window as any).__json4u_lastSavedRef = lastSavedRef;
+  }
+  useEffect(() => {
+    if (kind !== "main" || !editor) {
+      return;
+    }
+    const save = debounce(async () => {
+      const text = editor.text();
+      if (text && text.length > 0 && text !== lastSavedRef.text) {
+        await setLastDocument(text, version);
+        lastSavedRef.text = text;
+        postDocUpdate({ version, timestamp: Date.now() });
+      }
+    }, 500, { trailing: true });
+    const idle = (typeof (window as any).requestIdleCallback === "function");
+    if (idle) {
+      (window as any).requestIdleCallback(() => save());
+    } else {
+      save();
+    }
+    return () => {
+      save.cancel();
+    };
+  }, [editor, version, kind]);
+
+  useEffect(() => {
+    if (kind !== "main" || !editor) {
+      return;
+    }
+    const off = onDocUpdate(async () => {
+      const saved = await getLastDocument();
+      const text = saved?.text;
+      if (typeof text === "string" && text.length > 0) {
+        await editor.parseAndSet(text, { format: false }, false);
+      }
+    });
+    return () => {
+      off();
+    };
+  }, [editor, kind]);
+}
+
 function useDisplayExample(kind: Kind) {
   const editor = useEditor("main");
   const incrEditorInitCount = useStatusStore((state) => state.incrEditorInitCount);
 
   useEffect(() => {
-    if (kind === "main" && editor && incrEditorInitCount() <= 1) {
-      editor.parseAndSet(example);
+    if (kind === "main" && editor) {
+      (async () => {
+        const saved = await getLastDocument();
+        const text = saved?.text;
+        const count = incrEditorInitCount();
+        if (typeof text === "string" && text.length > 0) {
+          await editor.parseAndSet(text, { format: false });
+        } else if (count <= 1) {
+          editor.parseAndSet(example);
+        }
+      })();
     }
   }, [editor]);
 }

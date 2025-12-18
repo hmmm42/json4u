@@ -152,7 +152,7 @@ export default function SearchInput<T extends { id: string }>({
         {items.length === 0 && <CommandEmpty>{t("no_results_found")}</CommandEmpty>}
         <CommandGroup
           ref={groupRef}
-          className="scrollbar-thin scrollbar-track-slate-100 scrollbar-thumb-rounded scrollbar-thumb-slate-300 scrollbar-track-rounded"
+          className="scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-track-zinc-200 dark:scrollbar-track-zinc-800 scrollbar-thumb-zinc-400 dark:scrollbar-thumb-zinc-600"
           style={{
             height,
             paddingTop: height > 0 ? commandGroupPaddingY : 0,
