@@ -47,8 +47,8 @@ const KV = memo((props: KvProps) => {
   return (
     <div
       className={cn(
-        "graph-kv hover:bg-blue-100 dark:hover:bg-blue-900",
-        props.selected && "bg-blue-100 dark:bg-blue-900",
+        "graph-kv hover:bg-muted",
+        props.selected && "bg-accent",
         props.hasChildren && "cursor-pointer",
       )}
       title={props.hasChildren ? t("double_click_to_reveal_first_child") : ""}

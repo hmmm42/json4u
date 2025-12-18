@@ -28,9 +28,9 @@ export default function Background({ className, size = 15, variant = "lines" }: 
         patternTransform="translate(-1,-1)"
       >
         {variant === "lines" ? (
-          <path stroke="#eee" strokeWidth="1" d={`M10 0 V${size} M0 10 H${size}`} />
+          <path stroke="var(--graph-bg-line)" strokeWidth="1" d={`M10 0 V${size} M0 10 H${size}`} />
         ) : (
-          <circle fill="rgb(145, 145, 154)" cx={0.5} cy={0.5} r={0.5} />
+          <circle fill="var(--graph-bg-dot)" cx={0.5} cy={0.5} r={0.5} />
         )}
       </pattern>
       <rect x="0" y="0" width="100%" height="100%" fill="url(#tbl-pattern-1)" />

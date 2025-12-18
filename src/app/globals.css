@@ -74,9 +74,18 @@
     --diff-bg-red: #ff9b9533;
     --diff-fg-green: #2ddf5966;
     --diff-bg-green: #82ffa433;
+
+    --graph-bg-line: #e5e7eb;
+    --graph-bg-dot: #a1a1aa;
+    --graph-highlight: #2563eb;
+    --graph-selected: #b91c1c;
+    --graph-edge-highlight: #2563eb;
+    --graph-handle-hidden-bg: #9ca3af;
+
+    color-scheme: light;
   }
 
-  [data-theme="dark"] {
+  .dark {
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
@@ -104,6 +113,42 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --btn-bg-active: #262626;
+    --btn-text-color: #e5e5e5;
+    --btn-input: #e5e5e5;
+    --kbd-color: #f9fafb;
+    --kbd-bg-color: #111827;
+    --search-hl-color: #7f1d1d;
+
+    --tbl-border: #ffffff40;
+
+    --bg-key: #1f29334d;
+    --hl-key: #f38ba8;
+    --hl-string: #89b4fa;
+    --hl-number: #a6e3a1;
+    --hl-null: #f2cdcd;
+    --hl-empty: #94a3b866;
+    --hl-index: #94a3b866;
+
+    --parse-error: #f97373;
+    --parse-error-foreground: #fecaca33;
+    --diff-blank-hunk: #1f293333;
+    --diff-margin-red: #7f1f1f;
+    --diff-margin-green: #14532d;
+    --diff-fg-red: #fecaca66;
+    --diff-bg-red: #7f1f1f66;
+    --diff-fg-green: #bbf7d066;
+    --diff-bg-green: #16653466;
+
+    --graph-bg-line: #1f2937;
+    --graph-bg-dot: #4b5563;
+    --graph-highlight: #89b4fa;
+    --graph-selected: #f38ba8;
+    --graph-edge-highlight: #89b4fa;
+    --graph-handle-hidden-bg: #6b7280;
+
+    color-scheme: dark;
   }
 }
 
@@ -113,7 +158,13 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-300;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    body {
+      transition: none;
+    }
   }
 }
 
@@ -231,7 +282,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
 .graph-node {
   min-width: fit-content;
   border-width: 1px;
-  background-color: rgb(255 255 255);
+  background-color: hsl(var(--card));
   font-size: var(--graph-font-size);
   font-family: var(--graph-font-family);
 }
@@ -272,8 +323,8 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
   height: auto;
   max-height: 250px;
   overflow: hidden;
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background: hsl(var(--popover));
+  border: 1px solid hsl(var(--border));
 }
 
 .popover-item {
@@ -310,8 +361,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
   font-weight: 400;
 }
 
-.tbl-value {
-}
+.tbl-value {}
 
 .tbl-index {
   font-weight: 400;
@@ -362,6 +412,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
   from {
     height: 0;
   }
+
   to {
     height: var(--radix-collapsible-content-height);
   }
@@ -371,6 +422,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
   from {
     height: var(--radix-collapsible-content-height);
   }
+
   to {
     height: 0;
   }
@@ -381,6 +433,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
     opacity: 0;
     transform: translateY(2px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -392,6 +445,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
     opacity: 0;
     transform: translateX(-2px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -403,6 +457,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
     opacity: 0;
     transform: translateY(-2px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -414,6 +469,7 @@ https://stackoverflow.com/questions/47017753/monaco-editor-dynamically-resizable
     opacity: 0;
     transform: translateX(2px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);

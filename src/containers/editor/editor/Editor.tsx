@@ -8,6 +8,7 @@ import { useEditor, useEditorStore } from "@/stores/editorStore";
 import { useStatusStore } from "@/stores/statusStore";
 import { loader, Editor as MonacoEditor } from "@monaco-editor/react";
 import { useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 import { useShallow } from "zustand/shallow";
 import { example } from "./data";
 
@@ -21,6 +22,10 @@ export default function Editor({ kind, ...props }: EditorProps) {
   const translations = useTranslations();
   const setEditor = useEditorStore((state) => state.setEditor);
   const setTranslations = useEditorStore((state) => state.setTranslations);
+  const { theme, systemTheme } = useTheme();
+
+  const resolvedTheme = (theme === "system" ? systemTheme : theme) ?? "light";
+  const monacoTheme = resolvedTheme === "dark" ? "vs-dark" : "vs";
 
   useDisplayExample(kind);
   useRevealNode(kind);
@@ -30,6 +35,7 @@ export default function Editor({ kind, ...props }: EditorProps) {
     <MonacoEditor
       language="json"
       loading={<Loading />}
+      theme={monacoTheme}
       options={{
         fontSize: 13, // 设置初始字体大小
         scrollBeyondLastLine: false, // 行数超过一屏时才展示滚动条

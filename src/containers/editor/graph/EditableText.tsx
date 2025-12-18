@@ -50,7 +50,7 @@ const EditableText = memo((props: EditableTextProps) => {
         />
       ) : (
         <div
-          className={cn("hover:bg-yellow-100", ...props.classNames)}
+          className={cn("hover:bg-muted", ...props.classNames)}
           title={props.title}
           onClick={props.onClick}
           onDoubleClick={(e) => {

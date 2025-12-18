@@ -67,11 +67,10 @@ export default async function MainLayout({ children }: { children: React.ReactNo
         ></script>
       </head>
       <body>
-        {/* TODO: support dark theme */}
-        <ThemeProvider defaultTheme="light" disableTransitionOnChange>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem storageKey="json4u-theme">
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+          <Toaster richColors position="bottom-right" />
         </ThemeProvider>
-        <Toaster richColors position="bottom-right" />
       </body>
       <GoogleAnalytics gaId="G-TLYE3CBLPW" />
     </html>

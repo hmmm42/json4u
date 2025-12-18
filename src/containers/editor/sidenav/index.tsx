@@ -21,6 +21,7 @@ import {
   ArrowLeftToLine,
   ArrowRightFromLine,
   Bug,
+  SunMoon,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useShallow } from "zustand/shallow";
@@ -34,6 +35,7 @@ import PopoverBtn, { popoverBtnClass } from "./PopoverButton";
 import SharePopover from "./SharePopover";
 import StatisticsPopover from "./StatisticsPopover";
 import Toggle from "./Toggle";
+import ThemePopover from "./ThemePopover";
 
 export default function SideNav() {
   const [transition, setTransition] = useState(false);
@@ -132,6 +134,7 @@ export default function SideNav() {
             isPressed={enableSyncScroll}
             onPressedChange={(pressed) => setEnableSyncScroll(pressed)}
           />
+          <PopoverBtn title={t("Theme")} icon={<SunMoon className="icon" />} content={<ThemePopover />} />
         </ul>
         <ul className="flex flex-col px-1 gap-y-2">
           <LinkButton icon={<CircleHelp className="icon" />} title={t("Tutorial")} href={"/tutorial"} newWindow />

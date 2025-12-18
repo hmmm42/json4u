@@ -23,7 +23,7 @@ interface SourceHandleProps {
 
 export const SourceHandle = memo(({ id, nodeId, indexInParent, isChildrenHidden }: SourceHandleProps) => {
   const top = indexInParent !== undefined ? computeSourceHandleOffset(indexInParent) : undefined;
-  const backgroundColor = isChildrenHidden ? "rgb(156 163 175)" : undefined;
+  const backgroundColor = isChildrenHidden ? "var(--graph-handle-hidden-bg)" : undefined;
   const { setNodes, setEdges } = useReactFlow();
   const t = useTranslations();
 
